@@ -51,7 +51,7 @@ static BLEClient*  pClient;
 
 String trama [20];
 String tramaAnt[20];
-
+int contador = 0;
 static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, uint8_t* pData, size_t length, bool isNotify) 
 {
     std::string value = (char*)pData;
@@ -247,8 +247,7 @@ void setup()
 
 //-------------------------------------------------------------------------------------------------
 void loop() {
-    int contador = 0;
-    
+   
     // If the flag "doConnect" is true then we have scanned for and found the desired
     // BLE Server with which we wish to connect.  Now we connect to it.  Once we are 
     // connected we set the connected flag to be true.
@@ -265,14 +264,14 @@ void loop() {
         }
         doConnect = false;
     }
-    delay(1000*5); // Delay a second between loops.
+    delay(1000*3); // Delay a second between loops.
     if (connected)
     {
         pRemoteService = pClient->getService(SINGLE_CHARACTERISTIC);
         pRemoteCharacteristic = pRemoteService->getCharacteristic(RXS);
         if (pRemoteCharacteristic->canWrite())
         {
-            pRemoteCharacteristic->writeValue(0x04,true);
+            pRemoteCharacteristic->writeValue(contador,true);
             contador++;
         }
      }
